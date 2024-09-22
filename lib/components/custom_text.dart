@@ -9,16 +9,18 @@ class CustomText extends StatelessWidget {
   final TextAlign? textAlign;
   final FontStyle? fontStyle;
   final TextOverflow? textOverflow;
+
   const CustomText(
       {super.key,
       required this.text,
-      this.fontSize = 2,
+      this.fontSize = 15, // Updated default value for font size
       this.weight,
       this.color,
       this.lines,
       this.fontStyle,
       this.textOverflow,
       this.textAlign});
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -26,7 +28,7 @@ class CustomText extends StatelessWidget {
       maxLines: lines,
       textAlign: textAlign,
       style: TextStyle(
-          fontSize: 15,
+          fontSize: fontSize, // Use the fontSize parameter from the constructor
           color: color,
           fontWeight: weight,
           fontStyle: fontStyle,
