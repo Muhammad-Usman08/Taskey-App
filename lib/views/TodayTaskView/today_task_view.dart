@@ -31,23 +31,23 @@ class TodayTaskView extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: TodayMonthlyCard(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: SizedBox(
-                height: 150,
+        child: Padding(
+          padding: const EdgeInsets.all(screenPadding),
+          child: Column(
+            children: [
+              TodayMonthlyCard(),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 130,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 30,
                   itemBuilder: (context, index) {
                     String day = controller.getDay(index);
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Obx(() {
                         return GestureDetector(
                           onTap: () => controller.toggleSelection(index),
@@ -85,82 +85,85 @@ class TodayTaskView extends StatelessWidget {
                   },
                 ),
               ),
-            ),
-            Divider(),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: avatarColors.length,
-              itemBuilder: (context, index) {
-                bool isEven = index % 2 == 0;
-                return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: isEven
-                        ? Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Stack(
-                                    alignment: Alignment.topCenter,
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Container(
-                                        width: 80,
-                                        height: 1,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left:
-                                            -1, // Adjust this value to move the text higher or lower
-                                        child: CustomText(
-                                          text: getTimeForIndex(index),
+              SizedBox(
+                height: 15,
+              ),
+              Divider(),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: avatarColors.length,
+                itemBuilder: (context, index) {
+                  bool isEven = index % 2 == 0;
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: isEven
+                          ? Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.topCenter,
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          height: 1,
+                                          color: Colors.grey.shade400,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              HourlyTaskCards(index: index),
-                            ],
-                          )
-                        : Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                left: -1,
-                                child: Container(
-                                    width: 125,
-                                    height: 1,
-                                    color: Colors.grey.shade400),
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 115,
-                                  ),
-                                  HourlyTaskCards(index: index),
-                                ],
-                              ),
-                              Positioned(
-                                bottom: 40,
-                                child: CustomText(
-                                  text: getTimeForIndex(index),
+                                        Positioned(
+                                          bottom: 20,
+                                          left:
+                                              -1, // Adjust this value to move the text higher or lower
+                                          child: CustomText(
+                                            text: getTimeForIndex(index),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Positioned(
-                                left: -1,
-                                bottom: -1,
-                                child: Container(
-                                    width: 125,
-                                    height: 1,
-                                    color: Colors.grey.shade400),
-                              ),
-                            ],
-                          ));
-              },
-            )
-          ],
+                                HourlyTaskCards(index: index),
+                              ],
+                            )
+                          : Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Positioned(
+                                  left: -1,
+                                  child: Container(
+                                      width: 125,
+                                      height: 1,
+                                      color: Colors.grey.shade400),
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                    ),
+                                    HourlyTaskCards(index: index),
+                                  ],
+                                ),
+                                Positioned(
+                                  bottom: 40,
+                                  child: CustomText(
+                                    text: getTimeForIndex(index),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: -1,
+                                  bottom: -1,
+                                  child: Container(
+                                      width: 125,
+                                      height: 1,
+                                      color: Colors.grey.shade400),
+                                ),
+                              ],
+                            ));
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

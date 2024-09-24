@@ -13,13 +13,12 @@ class HourlyTaskCards extends StatelessWidget {
     }
 
     return Container(
-      width: 250,
       decoration: BoxDecoration(
         color: cardColor[index % cardColor.length], // Ensure no RangeError
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
