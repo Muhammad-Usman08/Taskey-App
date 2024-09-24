@@ -5,6 +5,7 @@ import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_texfield.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
+import 'package:taskey_app/views/Home/home_view.dart';
 import 'package:taskey_app/views/authentication/login/login_view.dart';
 
 class SignupView extends StatelessWidget {
@@ -85,6 +86,9 @@ class SignupView extends StatelessWidget {
             CommonButton(
               title: 'Sign Up',
               vertcalPaddingM: 15,
+              onPressed: () {
+                Get.to(() => HomeView());
+              },
             ),
             const SizedBox(
               height: 35,
