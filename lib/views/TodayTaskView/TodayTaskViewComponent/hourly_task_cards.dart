@@ -13,7 +13,7 @@ class HourlyTaskCards extends StatelessWidget {
     }
 
     return Container(
-      width: 280,
+      width: 250,
       decoration: BoxDecoration(
         color: cardColor[index % cardColor.length], // Ensure no RangeError
         borderRadius: BorderRadius.circular(20),
@@ -27,14 +27,14 @@ class HourlyTaskCards extends StatelessWidget {
               text: taskTitles[index],
               color: Colors.white,
               weight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 18,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
                   height: 40,
-                  width: 100,
+                  width: 90,
                   child: Stack(
                     alignment: Alignment.center,
                     children: List.generate(
@@ -43,7 +43,7 @@ class HourlyTaskCards extends StatelessWidget {
                         return Positioned(
                           left: i * 20.0,
                           child: CircleAvatar(
-                            radius: 18,
+                            radius: 15,
                             backgroundColor:
                                 avatarColors[index % avatarColors.length][i],
                           ),
@@ -52,7 +52,11 @@ class HourlyTaskCards extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomText(text: timeRange[index], color: Colors.white54),
+                CustomText(
+                  text: timeRange[index],
+                  color: Colors.white54,
+                  fontSize: 12,
+                ),
               ],
             ),
           ],

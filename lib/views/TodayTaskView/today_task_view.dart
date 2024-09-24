@@ -98,10 +98,29 @@ class TodayTaskView extends StatelessWidget {
                     child: isEven
                         ? Row(
                             children: [
-                              Container(
-                                  width: 80,
-                                  height: 1,
-                                  color: Colors.grey.shade400),
+                              Column(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topCenter,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        height: 1,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      Positioned(
+                                        bottom: 20,
+                                        left:
+                                            -1, // Adjust this value to move the text higher or lower
+                                        child: CustomText(
+                                          text: getTimeForIndex(index),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               HourlyTaskCards(index: index),
                             ],
                           )
@@ -122,6 +141,12 @@ class TodayTaskView extends StatelessWidget {
                                   ),
                                   HourlyTaskCards(index: index),
                                 ],
+                              ),
+                              Positioned(
+                                bottom: 40,
+                                child: CustomText(
+                                  text: getTimeForIndex(index),
+                                ),
                               ),
                               Positioned(
                                 left: -1,
@@ -145,5 +170,8 @@ class TodayTaskView extends StatelessWidget {
 String getTimeForIndex(int index) {
   int startHour = 10 + index; // Example: starts from 10 AM
   int endHour = startHour + 1;
-  return '$startHour:00 - $endHour:00';
+  if (endHour == 12) {
+    return '$endHour:00 Pm';
+  }
+  return '$endHour:00 Am';
 }
