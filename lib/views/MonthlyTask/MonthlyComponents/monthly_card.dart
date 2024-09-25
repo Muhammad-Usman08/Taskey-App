@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:taskey_app/components/custom_text.dart';
-import 'package:taskey_app/views/Home/HomeComponents/task_card.dart';
-import 'package:taskey_app/views/MonthlyTask/monthly_task_view.dart';
+import 'package:taskey_app/utils/constants.dart';
 
-class TodayMonthlyCard extends StatelessWidget {
-  const TodayMonthlyCard({
+class MonthlyCard extends StatelessWidget {
+  const MonthlyCard({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    DateTime today = DateTime.now();
-    String formattedDate = DateFormat('MMMM, d').format(today);
+    final now = DateTime.now();
+    final month = _getMonthName(now.month);
+    final day = now.day;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -23,12 +21,12 @@ class TodayMonthlyCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: '${formattedDate} ✍',
+                text: '$month, $day  ✍',
                 weight: FontWeight.bold,
                 fontSize: 30,
               ),
               CustomText(
-                text: '${taskTitles.length} Task Today',
+                text: '15 Task Today',
                 color: Colors.grey.shade500,
               ),
             ],
@@ -37,11 +35,13 @@ class TodayMonthlyCard extends StatelessWidget {
             height: 60,
             width: 60,
             child: IconButton(
-                onPressed: () {
-                  Get.to(MonthlyTaskView());
-                },
-                icon: Icon(Icons.calendar_month_outlined)),
+                onPressed: () {},
+                icon: Icon(
+                  Icons.calendar_month_outlined,
+                  color: Colors.white,
+                )),
             decoration: BoxDecoration(
+                color: Color(themeColor),
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
                   color: Colors.grey.shade300,
@@ -51,4 +51,23 @@ class TodayMonthlyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _getMonthName(int month) {
+  const monthNames = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  return monthNames[month];
 }

@@ -36,9 +36,7 @@ class TodayTaskView extends StatelessWidget {
           child: Column(
             children: [
               TodayMonthlyCard(),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               SizedBox(
                 height: 130,
                 child: ListView.builder(
@@ -49,35 +47,33 @@ class TodayTaskView extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Obx(() {
-                        return GestureDetector(
-                          onTap: () => controller.toggleSelection(index),
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CustomText(
-                                  text: '${index + 1}',
-                                  fontSize: 25,
-                                  color: controller.selectedDay.value == index
-                                      ? Colors.white
-                                      : Colors.grey.shade500,
-                                ),
-                                CustomText(
-                                    text: day,
-                                    fontSize: 25,
-                                    color: controller.selectedDay.value == index
-                                        ? Colors.white
-                                        : Colors.grey.shade500),
-                              ],
-                            ),
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              color: controller.selectedDay.value == index
-                                  ? Color(themeColor)
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                        return Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomText(
+                                text: '${index + 1}',
+                                fontSize: 25,
+                                color: controller.selectedDay.value == index
+                                    ? Colors.white
+                                    : Colors.grey.shade500,
+                              ),
+                              CustomText(
+                                text: day,
+                                fontSize: 25,
+                                color: controller.selectedDay.value == index
+                                    ? Colors.white
+                                    : Colors.grey.shade500,
+                              ),
+                            ],
+                          ),
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: controller.selectedDay.value == index
+                                ? Color(themeColor)
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         );
                       }),
@@ -85,9 +81,7 @@ class TodayTaskView extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Divider(),
               ListView.builder(
                 shrinkWrap: true,
@@ -96,70 +90,72 @@ class TodayTaskView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   bool isEven = index % 2 == 0;
                   return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: isEven
-                          ? Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Stack(
-                                      alignment: Alignment.topCenter,
-                                      clipBehavior: Clip.none,
-                                      children: [
-                                        Container(
-                                          width: 80,
-                                          height: 1,
-                                          color: Colors.grey.shade400,
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: isEven
+                        ? Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.topCenter,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        height: 1,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      Positioned(
+                                        bottom: 20,
+                                        left: -1,
+                                        child: CustomText(
+                                          text: getTimeForIndex(index),
                                         ),
-                                        Positioned(
-                                          bottom: 20,
-                                          left:
-                                              -1, // Adjust this value to move the text higher or lower
-                                          child: CustomText(
-                                            text: getTimeForIndex(index),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                HourlyTaskCards(index: index),
-                              ],
-                            )
-                          : Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Positioned(
-                                  left: -1,
-                                  child: Container(
-                                      width: 125,
-                                      height: 1,
-                                      color: Colors.grey.shade400),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 100,
-                                    ),
-                                    HourlyTaskCards(index: index),
-                                  ],
-                                ),
-                                Positioned(
-                                  bottom: 40,
-                                  child: CustomText(
-                                    text: getTimeForIndex(index),
+                                      ),
+                                    ],
                                   ),
+                                ],
+                              ),
+                              HourlyTaskCards(index: index),
+                            ],
+                          )
+                        : Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Positioned(
+                                left: -1,
+                                child: Container(
+                                  width: 125,
+                                  height: 1,
+                                  color: Colors.grey.shade400,
                                 ),
-                                Positioned(
-                                  left: -1,
-                                  bottom: -1,
-                                  child: Container(
-                                      width: 125,
-                                      height: 1,
-                                      color: Colors.grey.shade400),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                  ),
+                                  HourlyTaskCards(index: index),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: 40,
+                                child: CustomText(
+                                  text: getTimeForIndex(index),
                                 ),
-                              ],
-                            ));
+                              ),
+                              Positioned(
+                                left: -1,
+                                bottom: -1,
+                                child: Container(
+                                  width: 125,
+                                  height: 1,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ],
+                          ),
+                  );
                 },
               )
             ],
@@ -174,7 +170,7 @@ String getTimeForIndex(int index) {
   int startHour = 10 + index; // Example: starts from 10 AM
   int endHour = startHour + 1;
   if (endHour == 12) {
-    return '$endHour:00 Pm';
+    return '$endHour:00 PM';
   }
-  return '$endHour:00 Am';
+  return '$endHour:00 AM';
 }

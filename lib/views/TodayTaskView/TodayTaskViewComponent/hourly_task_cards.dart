@@ -9,7 +9,7 @@ class HourlyTaskCards extends StatelessWidget {
   Widget build(BuildContext context) {
     // Safeguard for index to avoid RangeError
     if (index < 0 || index >= taskTitles.length) {
-      return Container(); // or handle this case appropriately
+      return Container(); 
     }
 
     return Container(

@@ -120,17 +120,20 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       const SizedBox(height: 20),
 
                       // Pagination Dots
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(
-                          onboardingPages.length,
-                          (dotIndex) => buildDot(dotIndex, context),
-                        ),
-                      ),
                     ],
                   ),
                 );
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25.0, left: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: List.generate(
+                onboardingPages.length,
+                (dotIndex) => buildDot(dotIndex, context),
+              ),
             ),
           ),
           Row(

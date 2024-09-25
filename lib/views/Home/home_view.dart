@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:taskey_app/components/custom_app_bar.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
@@ -11,8 +12,16 @@ import 'package:taskey_app/views/TodayTaskView/today_task_view.dart';
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
+
+    String formattedDate() {
+  DateTime now = DateTime.now();
+  return DateFormat('EEEE, d').format(now);
+
+}
   @override
   Widget build(BuildContext context) {
+
+  String date = formattedDate();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -28,7 +37,7 @@ class HomeView extends StatelessWidget {
                 icon: Icon(
                   Icons.notifications_outlined,
                 )),
-            title: 'Friday, 26',
+            title: date,
           )),
       body: SingleChildScrollView(
         child: Padding(
