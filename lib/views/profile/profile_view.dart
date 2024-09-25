@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:taskey_app/components/common_button.dart';
+import 'package:taskey_app/components/custom_text.dart';
+import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/chat/chat_screen_view.dart';
 import 'package:taskey_app/views/edit_profile/edit_view.dart';
 import 'package:taskey_app/views/language/language_view.dart';
@@ -11,8 +15,15 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Profile'),
+        backgroundColor: Colors.white,
+        title: const CustomText(
+          text: 'Profile',
+          weight: FontWeight.w500,
+          fontSize: 20,
+        ),
+        automaticallyImplyLeading: false,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -37,46 +48,26 @@ class Profile extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
+            CommonButton(
+              title: 'Edit',
+              horizontalPadding: 25,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Add()), // Navigate to Edit screen
-                );
+                Get.to(() => Add());
               },
-              child: const Text('Edit Profile'),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildProjectContainer(
-                  'Ongoing Projects',
-                  '5',
-                  Colors.blue,
-                  Icons.access_time,
-                ),
-                _buildProjectContainer(
-                  'Completed Projects',
-                  '10',
-                  Colors.green,
-                  Icons.check,
-                ),
-              ],
             ),
             const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[200],
               ),
+              margin: const EdgeInsets.only(bottom: 20),
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _settingsOptions.length,
                 itemBuilder: (context, index) {
                   return Card(
+                    color: Colors.white,
                     margin:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     elevation: 4, // Adds shadow
@@ -86,50 +77,36 @@ class Profile extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(
                         _getIconForOption(index),
-                        color: Colors.blue, // Customize icon color
+                        color: const Color(themeColor), // Customize icon color
                       ),
                       title: Text(
                         _settingsOptions[index],
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
+                          vertical: 8, horizontal: 15),
                       onTap: () {
                         switch (index) {
                           case 0: // Edit
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Add()),
-                            );
+                            Get.to(() => Add());
                             break;
                           case 1: // Language
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Language()),
-                            );
+                            Get.to(() => Language());
                             break;
                           case 2: // Settings
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Setting()),
-                            );
+                            Get.to(() => Setting());
                             break;
                           case 3: // Chat Screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChatScreen()),
-                            );
+                            Get.to(() => ChatScreen(
+                                  backbutton: true,
+                                ));
                             break;
                           case 4: // Task Status
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TaskScreen()),
-                            );
+                            Get.to(() => TaskScreen());
                             break;
                         }
                       },
@@ -165,45 +142,5 @@ class Profile extends StatelessWidget {
       default:
         return Icons.help; // Default icon
     }
-  }
-
-  Widget _buildProjectContainer(
-      String title, String count, Color color, IconData icon) {
-    return Container(
-      width: 150,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, color: Colors.white, size: 20),
-            alignment: Alignment.center,
-          ),
-          const SizedBox(height: 5),
-          Text(
-            count,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            title,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
   }
 }

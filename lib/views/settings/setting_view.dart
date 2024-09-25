@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskey_app/components/custom_text.dart';
+import 'package:taskey_app/utils/constants.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -16,7 +18,7 @@ class _SettingState extends State<Setting> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
       ),
@@ -35,7 +37,7 @@ class _SettingState extends State<Setting> {
               height: 30,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: isEnabled ? Colors.blue : Colors.grey[300],
+                color: isEnabled ? Color(themeColor) : Colors.grey[400],
               ),
               child: AnimatedAlign(
                 alignment:
@@ -46,7 +48,7 @@ class _SettingState extends State<Setting> {
                   height: 30,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: Colors.white54,
                   ),
                 ),
               ),
@@ -59,9 +61,9 @@ class _SettingState extends State<Setting> {
 
   Widget buildListOption(String title, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5)],
       ),
@@ -71,7 +73,7 @@ class _SettingState extends State<Setting> {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.blue),
+              Icon(icon, color: Color(themeColor)),
               const SizedBox(width: 16),
               Text(
                 title,
@@ -89,10 +91,15 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const CustomText(
+          text: 'Setting',
+          weight: FontWeight.w500,
+          fontSize: 20,
+        ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

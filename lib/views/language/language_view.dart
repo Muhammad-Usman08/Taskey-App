@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskey_app/components/custom_text.dart';
+import 'package:taskey_app/utils/constants.dart';
 
 class Language extends StatefulWidget {
   const Language({super.key});
@@ -12,6 +14,7 @@ class _LanguageState extends State<Language> {
 
   Widget _buildLanguageCard(String language, int index) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -29,13 +32,10 @@ class _LanguageState extends State<Language> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                language,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+              CustomText(
+                text: language,
+                weight: FontWeight.w500,
+                fontSize: 18,
               ),
               Switch(
                 value: isSelected[index],
@@ -44,8 +44,9 @@ class _LanguageState extends State<Language> {
                     isSelected[index] = value;
                   });
                 },
-                activeColor: Colors.blue, // Change color when active
-                inactiveTrackColor: Colors.grey, // Change color when inactive
+                activeColor: Color(themeColor), // Change color when active
+                inactiveTrackColor:
+                    Colors.grey[300], // Change color when inactive
               ),
             ],
           ),
@@ -57,9 +58,17 @@ class _LanguageState extends State<Language> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Language'), centerTitle: true),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          title: const CustomText(
+            text: 'Language',
+            weight: FontWeight.w500,
+            fontSize: 20,
+          ),
+          backgroundColor: Colors.white,
+          centerTitle: true),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(screenPadding),
         child: Column(
           children: ['English', 'Urdu', 'French', 'German']
               .asMap()

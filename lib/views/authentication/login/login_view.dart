@@ -10,14 +10,15 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Center(
-          child: CustomText(
-            text: 'Sign In',
-            weight: FontWeight.w500,
-            fontSize: 18,
-          ),
+        backgroundColor: Colors.white,
+        title: const CustomText(
+          text: 'Sign In',
+          weight: FontWeight.w500,
+          fontSize: 20,
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(screenPadding),

@@ -7,6 +7,7 @@ import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/Home/home_view.dart';
 import 'package:taskey_app/views/authentication/login/login_view.dart';
+import 'package:taskey_app/views/main/main_screen.dart';
 
 class SignupView extends StatelessWidget {
   const SignupView({super.key});
@@ -14,12 +15,14 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Center(
           child: CustomText(
             text: 'Sign Up',
             weight: FontWeight.w500,
-            fontSize: 18,
+            fontSize: 20,
           ),
         ),
       ),
@@ -87,7 +90,7 @@ class SignupView extends StatelessWidget {
               title: 'Sign Up',
               vertcalPaddingM: 15,
               onPressed: () {
-                Get.to(() => HomeView());
+                Get.to(() => MainScreen());
               },
             ),
             const SizedBox(

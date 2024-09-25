@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_texfield.dart';
+import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 
 class Add extends StatefulWidget {
@@ -64,8 +65,14 @@ class _AddState extends State<Add> {
         : imageUrl;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        backgroundColor: Colors.white,
+        title: CustomText(
+          text: 'Edit Profile',
+          weight: FontWeight.w500,
+          fontSize: 20,
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -78,7 +85,7 @@ class _AddState extends State<Add> {
                 alignment: Alignment.bottomRight,
                 children: [
                   CircleAvatar(
-                    radius: 60,
+                    radius: 55,
                     backgroundImage: NetworkImage(displayImageUrl),
                   ),
                   Positioned(
@@ -86,9 +93,9 @@ class _AddState extends State<Add> {
                     right: 0,
                     child: GestureDetector(
                       onTap: _pickImage,
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 15,
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color(themeColor),
                         child: Icon(
                           Icons.add,
                           color: Colors.white,
@@ -100,25 +107,26 @@ class _AddState extends State<Add> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             CustomTextField(
               hintText: 'Name',
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             CustomTextField(
               hintText: 'Email',
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             CustomTextField(
               hintText: 'User Name',
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             CustomTextField(
               hintText: 'Contact',
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             CommonButton(
               title: 'Save',
+              vertcalPaddingM: 15,
               onPressed: () {},
             )
           ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskey_app/components/custom_text.dart';
+import 'package:taskey_app/utils/constants.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({super.key});
@@ -6,86 +8,92 @@ class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Task Status'),
+        backgroundColor: Colors.white,
+        title: const CustomText(
+          text: 'Task Status',
+          weight: FontWeight.w500,
+          fontSize: 20,
+        ),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  "assets/images/Task.png", // Replace with your image path
-                  width: 150, // Set the smaller width you want
-                  height: 150, // Set the smaller height you want
-                  fit: BoxFit.cover, // Adjust the fit as needed
-                ),
-                const SizedBox(
-                    height: 20), // Space between the image and circles
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildStatusCircle(Colors.greenAccent, 'To-Do'),
-                    const SizedBox(
-                        width: 20), // Space between the first and second set
-                    _buildStatusCircle(Colors.orangeAccent, 'In Progress'),
-                    const SizedBox(
-                        width: 20), // Space between the second and third set
-                    _buildStatusCircle(Colors.blue, 'Completed'),
-                  ],
-                ),
-                const SizedBox(height: 20), // Space after status circles
-                Container(
-                  child: const Text(
-                    'Monthly',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Padding(
+        padding: const EdgeInsets.all(screenPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      "assets/images/Task.png",
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                    height: 10), // Space between Monthly text and list
-              ],
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildStatusCircle(Colors.greenAccent, 'To-Do'),
+                      const SizedBox(width: 20),
+                      _buildStatusCircle(Colors.orangeAccent, 'In Progress'),
+                      const SizedBox(width: 20),
+                      _buildStatusCircle(Colors.blue, 'Completed'),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  const CustomText(
+                      text: 'Monthly', weight: FontWeight.bold, fontSize: 20),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                _buildTaskCard('To-Do', Colors.greenAccent),
-                _buildTaskCard('In Progress', Colors.orangeAccent),
-                _buildTaskCard('Completed', Colors.blue),
-              ],
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildTaskCard('To-Do'),
+                  _buildTaskCard('In Progress'),
+                  _buildTaskCard('Completed'),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildStatusCircle(Color color, String text) {
     return Row(
-      mainAxisSize: MainAxisSize.min, // Only take as much space as needed
+      mainAxisSize: MainAxisSize.min,
       children: [
         CircleAvatar(
           backgroundColor: color, // Circle color
-          radius: 20, // Circle radius
+          radius: 5,
         ),
-        const SizedBox(width: 8), // Space between circle and text
+        const SizedBox(width: 8),
         Text(
           text,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 14),
         ),
       ],
     );
   }
 
-  Widget _buildTaskCard(String title, Color color) {
+  Widget _buildTaskCard(
+    String title,
+  ) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2), // Light background color
-        borderRadius: BorderRadius.circular(10), // Rounded corners
-        border: Border.all(color: color), // Border color
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(themeColor)),
       ),
       padding: const EdgeInsets.all(16),
       child: Row(

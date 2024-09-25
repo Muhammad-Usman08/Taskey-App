@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:taskey_app/utils/constants.dart';
 
-class AvatarWidget extends StatelessWidget {
+class UserChatWidget extends StatelessWidget {
   final String imageUrl;
   final String name;
+  final void Function()? ontap;
 
-  const AvatarWidget({
+  const UserChatWidget({
     Key? key,
     required this.imageUrl,
     required this.name,
+    this.ontap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 40,
+        GestureDetector(
+          onTap: ontap,
+          child: ListTile(
+            leading: CircleAvatar(
+              radius: 25,
               backgroundImage: NetworkImage(imageUrl),
             ),
-            SizedBox(width: 10),
-            Text(
-              name,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            title: Text(name),
+            trailing: Icon(
+              Icons.chat,
+              color: Color(themeColor),
             ),
-          ],
+          ),
         ),
-        const Icon(Icons.camera_alt), // Camera icon on the right
+        SizedBox(
+          height: 8,
+        ),
+        Divider(),
+        SizedBox(
+          height: 8,
+        )
       ],
     );
   }
