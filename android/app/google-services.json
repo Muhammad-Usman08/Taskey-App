@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "401426098765",
+    "project_id": "taskey-app-fc3ad",
+    "storage_bucket": "taskey-app-fc3ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401426098765:android:9a887ee2527c7552a00a04",
+        "android_client_info": {
+          "package_name": "com.example.taskey_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDdwFwAZzjKVEbm-QbVYtBTpxY0m9i9Oo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

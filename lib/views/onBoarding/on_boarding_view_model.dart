@@ -18,17 +18,17 @@ List<OnboardingPage> onboardingPages = [
   OnboardingPage(
     title: "Task Management",
     subtitle: "Let's create a\nspace for your\nworkflows.",
-    mainImage: "assets/images/person.png", // Adjust based on your person image
+    mainImage: "assets/images/person.png", 
     floatingImages: [
-      "assets/images/ellipses1.png", // Adjust based on your floating ellipses
-      "assets/images/elipses2.png", // Another floating image
-      "assets/images/elipse3.png", // Another floating image
+      "assets/images/ellipses1.png", 
+      "assets/images/elipses2.png",
+      "assets/images/elipse3.png", 
     ],
   ),
   OnboardingPage(
     title: "Task Management",
     subtitle: "Work more\nStructured and\nOrganized 👌.",
-    mainImage: "assets/images/person.png", // Adjust based on your person image
+    mainImage: "assets/images/person.png", 
     floatingImages: [
       "assets/images/Rectangle.png",
       "assets/images/Rectangle.png",
@@ -56,7 +56,7 @@ Text getFormattedSubtitle(
           text: highlightWord,
           style: TextStyle(
             color: highlightColor,
-            fontWeight: FontWeight.bold, // Bold to emphasize the word
+            fontWeight: FontWeight.bold, 
           )));
     }
   }

@@ -4,6 +4,7 @@ import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/authentication/signUp/signup_view.dart';
+import 'package:taskey_app/views/onBoarding/on_boarding_view.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
@@ -31,51 +32,52 @@ class SplashView extends StatelessWidget {
               bottom: 0,
               right: 0,
               left: 0,
-              child: Container(
-                height: height * 0.52,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+              child: SingleChildScrollView(
+                child: Container(
+                  height: height * 0.52,
+                  padding: const EdgeInsets.only(left: 50, right: 50, top: 40),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CustomText(
-                      text: 'Taskey',
-                      weight: FontWeight.w900,
-                      fontSize: 40,
-                      color: Color(themeColor),
-                    ),
-                    const SizedBox(height: 18),
-                    const CustomText(
-                      text: 'Building Better \nWorkplaces ',
-                      weight: FontWeight.w800,
-                      textAlign: TextAlign.center,
-                      fontSize: 30,
-                    ),
-                    const SizedBox(height: 18),
-                    const CustomText(
-                      text:
-                          'Create a unique emotional story that \ndescribes better than words',
-                      textAlign: TextAlign.center,
-                      weight: FontWeight.bold,
-                      fontSize: 12,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(height: 30),
-                    CommonButton(
-                      title: 'Get Started',
-                      vertcalPaddingM: 15,
-                      onPressed: () {
-                        Get.off(() => SignupView());
-                      },
-                    )
-                  ],
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CustomText(
+                        text: 'Taskey',
+                        weight: FontWeight.w900,
+                        fontSize: 40,
+                        color: Color(themeColor),
+                      ),
+                      const SizedBox(height: 18),
+                      const CustomText(
+                        text: 'Building Better \nWorkplaces ',
+                        weight: FontWeight.w800,
+                        textAlign: TextAlign.center,
+                        fontSize: 30,
+                      ),
+                      const SizedBox(height: 18),
+                      const CustomText(
+                        text:
+                            'Create a unique emotional story that \ndescribes better than words',
+                        textAlign: TextAlign.center,
+                        weight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(height: 30),
+                      CommonButton(
+                        title: 'Get Started',
+                        vertcalPaddingM: 17,
+                        onPressed: () {
+                          Get.off(() => OnBoardingView());
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

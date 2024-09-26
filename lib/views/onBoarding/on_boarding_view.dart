@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/Home/home_view.dart';
+import 'package:taskey_app/views/authentication/signUp/signup_view.dart';
 import 'package:taskey_app/views/onBoarding/on_boarding_view_model.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -142,7 +143,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               // Skip TextButton
               TextButton(
                 onPressed: () {
-                  Get.to(HomeView());
+                  Get.to(SignupView());
 
                   // Handle Skip action
                 },
@@ -162,7 +163,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       curve: Curves.ease,
                     );
                   } else {
-                    Get.to(HomeView());
+                    Get.to(SignupView());
                   }
                 },
                 child: ClipRRect(
