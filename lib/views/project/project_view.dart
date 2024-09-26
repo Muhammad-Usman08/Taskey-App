@@ -7,7 +7,6 @@ import 'package:taskey_app/views/project/componenet/my_custom_textField.dart';
 import 'package:taskey_app/views/project/componenet/project_card.dart';
 import 'package:taskey_app/views/project/project_view_model.dart';
 
-
 class ProjectView extends StatelessWidget {
   final ProjectViewModel viewModel = Get.put(ProjectViewModel());
 
@@ -16,6 +15,7 @@ class ProjectView extends StatelessWidget {
     List<String> per = ['Favourite', 'Recent', 'All'];
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomAppBar(

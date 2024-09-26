@@ -25,6 +25,7 @@ class AddTaskView extends StatelessWidget {
     final AddTaskViewModel controller = Get.put(AddTaskViewModel());
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomAppBar2(
@@ -38,7 +39,7 @@ class AddTaskView extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.all(screenPadding),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
