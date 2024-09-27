@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:taskey_app/Model/firesstore_model.dart';
+import 'package:taskey_app/Model/firestore_controller.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/AddTask/add_task_view.dart';
 import 'package:taskey_app/views/Home/home_view.dart';
@@ -16,13 +19,6 @@ class MainScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<MainScreen> {
   // screens
-  List<Widget> screens = [
-    HomeView(),
-    ProjectView(),
-    AddTaskView(),
-    ChatScreen(backbutton: false),
-    Profile(),
-  ];
 
   // variables
   int currentIndex = 0;
@@ -35,6 +31,18 @@ class _HomeScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FirestoreController firestoreController = Get.put(FirestoreController());
+    User? user = firestoreController.currentUser;
+    List<Widget> screens = [
+      HomeView(),
+      ProjectView(),
+      AddTaskView(),
+      ChatScreen(backbutton: false),
+    user !=null ? Profile(
+        user: user,
+      ):Container(),
+    ];
+
     return Scaffold(
       body: screens[currentIndex],
       floatingActionButton: FloatingActionButton(
@@ -83,6 +91,7 @@ class _HomeScreenState extends State<MainScreen> {
             ),
             IconButton(
               onPressed: () {
+             
                 onItemTapped(4); // Profile
               },
               icon: SvgPicture.asset(

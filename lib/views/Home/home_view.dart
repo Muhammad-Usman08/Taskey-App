@@ -46,7 +46,7 @@ class HomeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: 'Let’s make a \nhabits together  🙌',
+                text: 'Let’s make a \nhabits together  🙌 ' ,
                 weight: FontWeight.bold,
                 fontSize: 30,
               ),

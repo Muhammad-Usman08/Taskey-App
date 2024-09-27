@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taskey_app/Model/firesstore_model.dart';
 import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
@@ -10,15 +11,18 @@ import 'package:taskey_app/views/settings/setting_view.dart';
 import 'package:taskey_app/views/task/task_view.dart'; // Import your edit.dart file
 
 class Profile extends StatelessWidget {
-  Profile({super.key});
-
+  Profile({
+    super.key,
+    required this.user,
+  });
+  final User user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const CustomText(
+        title: CustomText(
           text: 'Profile',
           weight: FontWeight.w500,
           fontSize: 20,
@@ -30,21 +34,21 @@ class Profile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
-            const CircleAvatar(
+            SizedBox(height: 20),
+            CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage(
-                'https://cdn.pixabay.com/photo/2015/01/12/10/44/woman-597173_640.jpg',
+                '${user.imageUrl}',
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Jenny Alxinder',
+            Text(
+              '${user.username}',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
-            const Text(
-              'JennyAlxinder22@gmail.com',
+            Text(
+              '${user.email}',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 20),
