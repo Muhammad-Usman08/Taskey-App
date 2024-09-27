@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_app_bar.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
@@ -18,11 +19,15 @@ class AddTaskView extends StatelessWidget {
     TextEditingController taskController = TextEditingController();
     TextEditingController teamNameController = TextEditingController();
     TextEditingController dateController = TextEditingController();
+    TextEditingController subTitle = TextEditingController();
+
     TextEditingController startTimeController =
         TextEditingController(); // Start time controller
     TextEditingController endTimeController = TextEditingController();
 
     final AddTaskViewModel controller = Get.put(AddTaskViewModel());
+
+    controller.fetchUsers();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,23 +53,35 @@ class AddTaskView extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        child: SvgPicture.asset('assets/svg/Group.svg',
-                            fit: BoxFit.scaleDown),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Color(themeColor),
+                      Obx(() {
+                        return Container(
+                          height: 80,
+                          width: 80,
+                          child: controller.logoUrl.value.isEmpty
+                              ? SvgPicture.asset('assets/svg/Group.svg',
+                                  fit: BoxFit.scaleDown)
+                              : ClipOval(
+                                  child: Image.network(controller.logoUrl.value,
+                                      fit: BoxFit.cover),
+                                ),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Color(themeColor),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                       SizedBox(height: 10),
-                      CustomText(
-                        text: 'Upload Logo file',
-                        weight: FontWeight.bold,
-                        fontSize: 20,
+                      GestureDetector(
+                        onTap: () async {
+                          await controller.selectLogo();
+                        },
+                        child: CustomText(
+                          text: 'Upload Logo file',
+                          weight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                       CustomText(
                           text: 'Your logo always publish',
@@ -109,6 +126,19 @@ class AddTaskView extends StatelessWidget {
                         hintText: 'Add a Task',
                         controller: taskController,
                       ),
+                      SizedBox(height: 10),
+                      CustomText(
+                        text: 'Description',
+                        weight: FontWeight.bold,
+                        color: Colors.grey.shade700,
+                        fontSize: 18,
+                      ),
+                      SizedBox(height: 15),
+                      MyCustomTextfield(
+                        hintText: 'Enter Short Description',
+                        controller: subTitle,
+                      ),
+                      SizedBox(height: 10),
                     ],
                   );
                 } else if (controller.selectedOption.value == 'Project') {
@@ -125,6 +155,12 @@ class AddTaskView extends StatelessWidget {
                         hintText: 'Add a Project',
                         controller: taskController,
                       ),
+                      SizedBox(height: 15),
+                      MyCustomTextfield(
+                        hintText: 'Enter Short Description',
+                        controller: subTitle,
+                      ),
+                      SizedBox(height: 10),
                     ],
                   );
                 } else {
@@ -145,24 +181,46 @@ class AddTaskView extends StatelessWidget {
                     return Row(
                       children:
                           List.generate(controller.teamMembers.length, (i) {
+                        final member = controller.teamMembers[i];
+                        final isLeader =
+                            controller.leaderId.value == member['userId'];
                         return Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Color(themeColor),
-                                radius:
-                                    25, // Set a specific radius for consistent size
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              CustomText(
-                                text: controller.teamMembers[i],
-                                color: Colors.grey.shade700,
-                                fontSize: 12, // Optional: adjust font size
-                              ),
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              controller.setLeader(member['userId']);
+                            },
+                            child: Column(
+                              children: [
+                                Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(member['imageUrl']),
+                                      radius: 25,
+                                    ),
+                                    if (isLeader)
+                                      Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    SizedBox(height: 5),
+                                  ],
+                                ),
+                                Center(
+                                  child: CustomText(
+                                    text: member['username'],
+                                    color: Colors.grey.shade700,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }),
@@ -179,19 +237,25 @@ class AddTaskView extends StatelessWidget {
                             content: SizedBox(
                               height: 200,
                               width: double.maxFinite,
-                              child: ListView.builder(
-                                itemCount: controller.users.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(controller.users[index]),
-                                    onTap: () {
-                                      controller.addTeamMember(
-                                          controller.users[index]);
-                                      Get.back(); // Close the dialog
-                                    },
-                                  );
-                                },
-                              ),
+                              child: Obx(() {
+                                return ListView.builder(
+                                  itemCount: controller.users.length,
+                                  itemBuilder: (context, index) {
+                                    final user = controller.users[index];
+                                    return ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(user['imageUrl']),
+                                      ),
+                                      title: Text(user['username']),
+                                      onTap: () {
+                                        controller.addTeamMember(user);
+                                        Get.back(); // Close the dialog
+                                      },
+                                    );
+                                  },
+                                );
+                              }),
                             ),
                           );
                         },
@@ -234,9 +298,9 @@ class AddTaskView extends StatelessWidget {
                 color: Colors.grey.shade700,
                 fontSize: 18,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               MyCustomTextfield(
-                hintText: 'Enter team name',
+                hintText: 'Enter Team Name',
                 controller: teamNameController,
               ),
               SizedBox(height: 10),
@@ -372,6 +436,38 @@ class AddTaskView extends StatelessWidget {
                     }));
               }),
               SizedBox(height: 30),
+              Center(
+                  child: CommonButton(
+                onPressed: () async {
+                  print('Task Name: ${taskController.text.trim()}');
+
+                  await controller.saveTask(
+                    taskController.text.trim(),
+                    teamNameController.text.trim(),
+                    dateController.text.trim(),
+                    startTimeController.text.trim(),
+                    endTimeController.text.trim(),
+                    subTitle.text.trim(),
+                  );
+
+                  // Clear the text fields only after saving
+                  taskController.clear();
+                  teamNameController.clear();
+                  dateController.clear();
+                  startTimeController.clear();
+                  endTimeController.clear();
+                  subTitle.clear();
+                  controller.logoUrl.value = '';
+
+                  controller.teamMembers.clear();
+                  controller.board[0];
+                  controller.type[0];
+                },
+                vertcalPaddingM: 15,
+                horizontalPadding: 160,
+                title: 'Save',
+                bgColor: Color(themeColor),
+              ))
             ],
           ),
         ),
