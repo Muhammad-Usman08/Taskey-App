@@ -3,16 +3,19 @@ import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key, required this.index});
+  const TaskCard(
+      {super.key, required this.index, this.taskName, this.taskDescription});
   final int index;
-
+  final String? taskName;
+  final String? taskDescription;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 210,
-      width: MediaQuery.of(context).size.width * 0.85,
+      margin: EdgeInsets.only(right: 10),
+      width: MediaQuery.of(context).size.width * 0.95,
       decoration: BoxDecoration(
-        color: Color(themeColor),
+        color: const Color(themeColor),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Padding(
@@ -22,13 +25,13 @@ class TaskCard extends StatelessWidget {
           children: [
             // Task title and subtitle based on the index
             CustomText(
-              text: taskTitles[index],
+              text: taskName ?? 'No Task Name',
               weight: FontWeight.bold,
               fontSize: 25,
               color: Colors.white,
             ),
             CustomText(
-              text: taskSubtitles[index],
+              text: taskDescription ?? 'No Description',
               color: Colors.white60,
             ),
             const SizedBox(height: 20),
@@ -47,7 +50,7 @@ class TaskCard extends StatelessWidget {
                         left: i * 25.0, // Adjust spacing for overlap
                         child: CircleAvatar(
                           radius: 25, // Adjust size as needed
-                          backgroundColor: avatarColors[index][i],
+                          backgroundColor: Colors.red,
                         ),
                       );
                     }),
@@ -70,7 +73,7 @@ class TaskCard extends StatelessWidget {
                             ),
                             CustomText(
                               text:
-                                  '${progressValues[index]}/${totalValues[index]}',
+                                  '', // '${progressValues[index]}/${totalValues[index]}',
                               color: Colors.white,
                             ),
                           ],
@@ -82,7 +85,7 @@ class TaskCard extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: LinearProgressIndicator(
-                          value: progressValues[index] / totalValues[index],
+                          // value: progressValues[index] / totalValues[index],
                           backgroundColor: Colors.white.withOpacity(0.2),
                           color: Colors.white,
                           minHeight: 10,
@@ -100,21 +103,10 @@ class TaskCard extends StatelessWidget {
   }
 }
 
-// Dynamic data for tasks
-List<String> taskTitles = [
-  'Application Design',
-  'Website Development',
-  'Brand Identity'
-];
-List<String> taskSubtitles = [
-  'UI Design Kit',
-  'Frontend and Backend',
-  'Logo and Style Guide'
-];
-List<int> progressValues = [50, 30, 70];
-List<int> totalValues = [80, 100, 90];
-List<List<Color>> avatarColors = [
-  [Colors.red, Colors.green, Colors.blue],
-  [Colors.orange, Colors.purple, Colors.yellow],
-  [Colors.cyan, Colors.pink, Colors.teal]
-];
+// List<int> progressValues = [50, 30, 70, 65, 50, 50];
+// List<int> totalValues = [80, 100, 90, 100, 90, 100];
+// List<List<Color>> avatarColors = [
+//   [Colors.red, Colors.green, Colors.blue],
+//   [Colors.orange, Colors.purple, Colors.yellow],
+//   [Colors.cyan, Colors.pink, Colors.teal]
+// ];

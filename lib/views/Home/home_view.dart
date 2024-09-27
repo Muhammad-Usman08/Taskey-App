@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 import 'package:taskey_app/components/custom_app_bar.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
-import 'package:taskey_app/views/Home/HomeComponents/in_progress_tile.dart';
-import 'package:taskey_app/views/Home/HomeComponents/task_card.dart';
+import 'package:taskey_app/views/home/homeComponent/in_progress_tile.dart';
+import 'package:taskey_app/views/home/homeComponent/task_card.dart';
+import 'package:taskey_app/views/home/home_view_model.dart';
 import 'package:taskey_app/views/TodayTaskView/today_task_view.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  HomeView({super.key});
+  final HomeViewModel controller = Get.put(HomeViewModel());
 
-
-    String formattedDate() {
-  DateTime now = DateTime.now();
-  return DateFormat('EEEE, d').format(now);
-
-}
   @override
   Widget build(BuildContext context) {
-
-  String date = formattedDate();
+    String date = controller.formattedDate();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
+          preferredSize: const Size.fromHeight(100),
           child: CustomAppBar(
             icon: IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.dashboard_outlined,
                 )),
             icon2: IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.notifications_outlined,
                 )),
             title: date,
@@ -45,46 +38,115 @@ class HomeView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(
-                text: 'Let’s make a \nhabits together  🙌 ' ,
+              const CustomText(
+                text: 'Let’s make a \nhabits together  🙌 ',
                 weight: FontWeight.bold,
                 fontSize: 30,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 height: 220,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemExtent: 360,
-                  itemCount: taskTitles.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: TaskCard(index: index),
-                    );
+                child: StreamBuilder(
+                  stream: controller.getTask(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var taskDocuments = snapshot.data!.docs;
+
+                      if (taskDocuments.isEmpty) {
+                        return const Center(
+                          child: Text('No tasks available.'),
+                        );
+                      }
+
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: taskDocuments.length,
+                        itemBuilder: (context, index) {
+                          var taskData = taskDocuments[index].data()
+                              as Map<String, dynamic>;
+
+                          return TaskCard(
+                            index: index,
+                            taskName: taskData['taskName'] as String? ??
+                                'No Task Name',
+                            taskDescription:
+                                taskData['desc'] as String? ?? 'No Description',
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    } else {
+                      return Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                CustomText(
+                const CustomText(
                   text: 'in Progress',
                   weight: FontWeight.bold,
                   fontSize: 25,
                 ),
                 InkWell(
                     onTap: () {
-                      Get.to(TodayTaskView());
+                      Get.to(const TodayTaskView());
                     },
-                    child: Icon(Icons.arrow_forward_ios)),
+                    child: const Icon(Icons.arrow_forward_ios)),
               ]),
-              SizedBox(height: 10),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: inProgress.length,
-                itemBuilder: (context, index) {
-                  return InProgressTile(index: index);
+              const SizedBox(height: 10),
+              StreamBuilder(
+                stream: controller.getTask(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var taskDocuments = snapshot.data!.docs;
+
+                    if (taskDocuments.isEmpty) {
+                      return const Center(
+                        child: Text('No tasks available.'),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: taskDocuments.length,
+                      itemBuilder: (context, index) {
+                        var taskData =
+                            taskDocuments[index].data() as Map<String, dynamic>;
+
+                        return InProgressTile(
+                          index: index,
+                          taskName:
+                              taskData['taskName'] as String? ?? 'No Task Name',
+                          taskDescription:
+                              taskData['desc'] as String? ?? 'No Description',
+                          startTime: taskData['startTime'],
+                          endTime: taskData['endTime'],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
                 },
               )
             ],

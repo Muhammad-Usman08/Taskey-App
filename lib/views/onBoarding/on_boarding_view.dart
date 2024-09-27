@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
-import 'package:taskey_app/views/Home/home_view.dart';
 import 'package:taskey_app/views/authentication/authGate/auth_gate.dart';
-import 'package:taskey_app/views/authentication/signUp/signup_view.dart';
 import 'package:taskey_app/views/onBoarding/on_boarding_view_model.dart';
 
 class OnBoardingView extends StatefulWidget {

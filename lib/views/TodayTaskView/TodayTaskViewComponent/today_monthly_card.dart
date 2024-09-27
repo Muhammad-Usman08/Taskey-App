@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:taskey_app/components/custom_text.dart';
-import 'package:taskey_app/views/Home/HomeComponents/task_card.dart';
 import 'package:taskey_app/views/MonthlyTask/monthly_task_view.dart';
 
 class TodayMonthlyCard extends StatelessWidget {
@@ -26,10 +25,6 @@ class TodayMonthlyCard extends StatelessWidget {
                 text: '${formattedDate} ✍',
                 weight: FontWeight.bold,
                 fontSize: 30,
-              ),
-              CustomText(
-                text: '${taskTitles.length} Task Today',
-                color: Colors.grey.shade500,
               ),
             ],
           ),
