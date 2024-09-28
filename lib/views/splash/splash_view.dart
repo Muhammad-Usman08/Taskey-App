@@ -5,14 +5,22 @@ import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/authentication/signUp/signup_view.dart';
 import 'package:taskey_app/views/onBoarding/on_boarding_view.dart';
+import 'package:taskey_app/views/settings/setting_view_model.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final SettingViewModel settingsController = Get.find();
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
+
+    Color getColor(Color lightColor, Color darkColor) {
+      return settingsController.isDarkModeEnabled == true
+          ? darkColor
+          : lightColor;
+    }
 
     return Scaffold(
       backgroundColor: const Color(themeColor),
@@ -36,8 +44,8 @@ class SplashView extends StatelessWidget {
                 child: Container(
                   height: height * 0.52,
                   padding: const EdgeInsets.only(left: 50, right: 50, top: 40),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: getColor(Colors.white, Colors.black),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -46,17 +54,21 @@ class SplashView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CustomText(
+                      CustomText(
                         text: 'Taskey',
                         weight: FontWeight.w900,
                         fontSize: 40,
                         color: Color(themeColor),
                       ),
                       const SizedBox(height: 18),
-                      const CustomText(
+                      CustomText(
                         text: 'Building Better \nWorkplaces ',
                         weight: FontWeight.w800,
                         textAlign: TextAlign.center,
+                        color: getColor(
+                          Colors.black,
+                          Colors.white,
+                        ),
                         fontSize: 30,
                       ),
                       const SizedBox(height: 18),

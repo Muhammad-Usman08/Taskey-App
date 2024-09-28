@@ -14,9 +14,7 @@ class LoginView extends StatelessWidget {
     final LoginViewModel controller = Get.put(LoginViewModel());
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: const CustomText(
           text: 'Sign In',
           weight: FontWeight.w500,

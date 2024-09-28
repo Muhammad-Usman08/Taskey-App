@@ -9,7 +9,6 @@ import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/authentication/login/login_view.dart';
 import 'package:taskey_app/views/authentication/signUp/signup_view_model.dart';
-import 'package:taskey_app/views/main/main_screen.dart';
 
 class SignupView extends StatelessWidget {
   const SignupView({super.key});
@@ -18,9 +17,7 @@ class SignupView extends StatelessWidget {
   Widget build(BuildContext context) {
     final SignupViewModel controller = Get.put(SignupViewModel());
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: const Center(
           child: CustomText(
             text: 'Sign Up',

@@ -31,16 +31,19 @@ class _HomeScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final FirestoreController firestoreController = Get.put(FirestoreController());
+    final FirestoreController firestoreController =
+        Get.put(FirestoreController());
     User? user = firestoreController.currentUser;
     List<Widget> screens = [
       HomeView(),
       ProjectView(),
       AddTaskView(),
       ChatScreen(backbutton: false),
-    user !=null ? Profile(
-        user: user,
-      ):Container(),
+      user != null
+          ? Profile(
+              user: user,
+            )
+          : Container(),
     ];
 
     return Scaffold(
@@ -56,7 +59,6 @@ class _HomeScreenState extends State<MainScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         elevation: 1,
-        color: Colors.white,
         shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,7 +93,6 @@ class _HomeScreenState extends State<MainScreen> {
             ),
             IconButton(
               onPressed: () {
-             
                 onItemTapped(4); // Profile
               },
               icon: SvgPicture.asset(

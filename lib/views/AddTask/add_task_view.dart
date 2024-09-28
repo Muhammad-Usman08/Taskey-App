@@ -10,6 +10,7 @@ import 'package:taskey_app/views/AddTask/component/date_picker.dart';
 import 'package:taskey_app/views/AddTask/component/time_picker.dart';
 import 'package:taskey_app/views/main/main_screen.dart';
 import 'package:taskey_app/views/project/componenet/my_custom_textField.dart';
+import 'package:taskey_app/views/settings/setting_view_model.dart';
 
 class AddTaskView extends StatelessWidget {
   const AddTaskView({super.key});
@@ -20,17 +21,22 @@ class AddTaskView extends StatelessWidget {
     TextEditingController teamNameController = TextEditingController();
     TextEditingController dateController = TextEditingController();
     TextEditingController subTitle = TextEditingController();
-
-    TextEditingController startTimeController =
-        TextEditingController(); // Start time controller
+    TextEditingController startTimeController = TextEditingController();
     TextEditingController endTimeController = TextEditingController();
 
     final AddTaskViewModel controller = Get.put(AddTaskViewModel());
+    final SettingViewModel settingViewModel = Get.put(SettingViewModel());
 
     controller.fetchUsers();
 
+    // Helper function to get colors based on dark mode
+    Color getColor(Color lightColor, Color darkColor) {
+      return settingViewModel.isDarkModeEnabled == true
+          ? darkColor
+          : lightColor;
+    }
+
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomAppBar2(
@@ -51,58 +57,59 @@ class AddTaskView extends StatelessWidget {
             children: [
               Center(
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Obx(() {
-                        return Container(
-                          height: 80,
-                          width: 80,
-                          child: controller.logoUrl.value.isEmpty
-                              ? SvgPicture.asset('assets/svg/Group.svg',
-                                  fit: BoxFit.scaleDown)
-                              : ClipOval(
-                                  child: Image.network(controller.logoUrl.value,
-                                      fit: BoxFit.cover),
-                                ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Color(themeColor),
-                            ),
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      return Container(
+                        height: 80,
+                        width: 80,
+                        child: controller.logoUrl.value.isEmpty
+                            ? SvgPicture.asset('assets/svg/Group.svg',
+                                fit: BoxFit.scaleDown)
+                            : ClipOval(
+                                child: Image.network(controller.logoUrl.value,
+                                    fit: BoxFit.cover),
+                              ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Color(themeColor),
                           ),
-                        );
-                      }),
-                      SizedBox(height: 10),
-                      GestureDetector(
-                        onTap: () async {
-                          await controller.selectLogo();
-                        },
-                        child: CustomText(
-                          text: 'Upload Logo file',
-                          weight: FontWeight.bold,
-                          fontSize: 20,
                         ),
+                      );
+                    }),
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () async {
+                        await controller.selectLogo();
+                      },
+                      child: CustomText(
+                        text: 'Upload Logo file',
+                        weight: FontWeight.bold,
+                        fontSize: 20,
                       ),
-                      CustomText(
-                          text: 'Your logo always publish',
-                          color: Colors.grey.shade600)
-                    ]),
+                    ),
+                    CustomText(
+                      text: 'Your logo always publish',
+                      color: getColor(Colors.grey.shade700, Colors.white),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
               CustomText(
                 text: 'Select Work Type:',
-                color: Colors.grey.shade500,
+                color: getColor(Colors.grey.shade500, Colors.white),
                 weight: FontWeight.w700,
               ),
               Obx(() {
                 return DropdownButton<String>(
                   hint: Text('Select Action'),
                   value: controller.selectedOption.value.isEmpty
-                      ? null // Handle empty state
+                      ? null
                       : controller.selectedOption.value,
                   onChanged: controller.updateOption,
-                  items: <String>['Task', 'Project'] // Removed leading space
-                      .map((String value) {
+                  items: <String>['Task', 'Project'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -118,7 +125,7 @@ class AddTaskView extends StatelessWidget {
                     children: [
                       CustomText(
                         text: 'Task Name',
-                        color: Colors.grey.shade500,
+                        color: getColor(Colors.grey.shade500, Colors.white),
                         weight: FontWeight.w700,
                       ),
                       SizedBox(height: 15),
@@ -130,7 +137,7 @@ class AddTaskView extends StatelessWidget {
                       CustomText(
                         text: 'Description',
                         weight: FontWeight.bold,
-                        color: Colors.grey.shade700,
+                        color: getColor(Colors.grey.shade700, Colors.white),
                         fontSize: 18,
                       ),
                       SizedBox(height: 15),
@@ -147,13 +154,19 @@ class AddTaskView extends StatelessWidget {
                     children: [
                       CustomText(
                         text: 'Project Name',
-                        color: Colors.grey.shade500,
+                        color: getColor(Colors.grey.shade500, Colors.white),
                         weight: FontWeight.w700,
                       ),
                       SizedBox(height: 15),
                       MyCustomTextfield(
                         hintText: 'Add a Project',
                         controller: taskController,
+                      ),
+                      SizedBox(height: 15),
+                      CustomText(
+                        text: 'Project Description',
+                        color: getColor(Colors.grey.shade500, Colors.white),
+                        weight: FontWeight.w700,
                       ),
                       SizedBox(height: 15),
                       MyCustomTextfield(
@@ -169,12 +182,11 @@ class AddTaskView extends StatelessWidget {
               }),
               SizedBox(height: 15),
               CustomText(
-                  text: 'Team Members',
-                  color: Colors.grey.shade500,
-                  weight: FontWeight.w700),
-              SizedBox(
-                height: 5,
+                text: 'Team Members',
+                color: getColor(Colors.grey.shade500, Colors.white),
+                weight: FontWeight.w700,
               ),
+              SizedBox(height: 5),
               Row(
                 children: [
                   Obx(() {
@@ -215,7 +227,8 @@ class AddTaskView extends StatelessWidget {
                                 Center(
                                   child: CustomText(
                                     text: member['username'],
-                                    color: Colors.grey.shade700,
+                                    color: getColor(
+                                        Colors.grey.shade700, Colors.white),
                                     fontSize: 12,
                                   ),
                                 ),
@@ -228,7 +241,6 @@ class AddTaskView extends StatelessWidget {
                   }),
                   GestureDetector(
                     onTap: () {
-                      // Show dialog to add team member
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -244,13 +256,17 @@ class AddTaskView extends StatelessWidget {
                                     final user = controller.users[index];
                                     return ListTile(
                                       leading: CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(user['imageUrl']),
+                                        backgroundImage: user['imageUrl'] !=
+                                                    null &&
+                                                user['imageUrl'].isNotEmpty
+                                            ? NetworkImage(user['imageUrl'])
+                                            : NetworkImage(
+                                                'https://cdn-icons-png.freepik.com/256/7162/7162968.png?ga=GA1.1.1256163933.1675831381&semt=ais_hybrid'),
                                       ),
                                       title: Text(user['username']),
                                       onTap: () {
                                         controller.addTeamMember(user);
-                                        Get.back(); // Close the dialog
+                                        Get.back();
                                       },
                                     );
                                   },
@@ -273,18 +289,16 @@ class AddTaskView extends StatelessWidget {
                             ),
                           ),
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Color(themeColor))),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Color(themeColor)),
+                          ),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: 5),
                         CustomText(
                           text: 'Add',
                           weight: FontWeight.bold,
-
-                          color: Colors.grey.shade700,
-                          fontSize: 12, // Optional: adjust font size
+                          color: getColor(Colors.grey.shade700, Colors.white),
+                          fontSize: 12,
                         ),
                       ],
                     ),
@@ -295,7 +309,7 @@ class AddTaskView extends StatelessWidget {
               CustomText(
                 text: 'Team Name',
                 weight: FontWeight.bold,
-                color: Colors.grey.shade700,
+                color: getColor(Colors.grey.shade700, Colors.white),
                 fontSize: 18,
               ),
               SizedBox(height: 10),
@@ -307,7 +321,7 @@ class AddTaskView extends StatelessWidget {
               CustomText(
                 text: 'Date',
                 weight: FontWeight.bold,
-                color: Colors.grey.shade700,
+                color: getColor(Colors.grey.shade700, Colors.white),
                 fontSize: 18,
               ),
               SizedBox(height: 15),
@@ -324,7 +338,7 @@ class AddTaskView extends StatelessWidget {
                       CustomText(
                         text: 'Start Time',
                         weight: FontWeight.bold,
-                        color: Colors.grey.shade700,
+                        color: getColor(Colors.grey.shade700, Colors.white),
                         fontSize: 18,
                       ),
                       SizedBox(height: 15),
@@ -339,7 +353,7 @@ class AddTaskView extends StatelessWidget {
                       SizedBox(height: 10),
                       CustomText(
                         text: 'End Time',
-                        color: Colors.grey.shade700,
+                        color: getColor(Colors.grey.shade700, Colors.white),
                         fontSize: 18,
                         weight: FontWeight.bold,
                       ),
@@ -348,126 +362,123 @@ class AddTaskView extends StatelessWidget {
                         controller: endTimeController,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 10),
               CustomText(
-                  text: 'Board',
-                  color: Colors.grey.shade700,
-                  fontSize: 18,
-                  weight: FontWeight.bold),
+                text: 'Board',
+                color: getColor(Colors.grey.shade500, Colors.white),
+                fontSize: 18,
+                weight: FontWeight.bold,
+              ),
               SizedBox(height: 15),
               Obx(() {
                 return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(controller.board.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          controller.updateBoard(controller
-                              .board[index]); // Update the selected board
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: controller.selectedBoard.value ==
-                                      controller.board[index]
-                                  ? Color(themeColor)
-                                  : Colors.transparent,
-                            ), // Default color
-                            borderRadius: BorderRadius.circular(10),
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(controller.board.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        controller.updateBoard(controller.board[index]);
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: controller.selectedBoard.value ==
+                                    controller.board[index]
+                                ? Color(themeColor)
+                                : Colors.transparent,
                           ),
-                          child: CustomText(
-                            text: controller.board[index],
-
-                            color: controller.selectedBoard.value !=
-                                    controller.selectedBoard.value
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade800,
-                            // Default text color
-                            weight: FontWeight.bold,
-                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      );
-                    }));
+                        child: CustomText(
+                          text: controller.board[index],
+                          color: controller.selectedBoard.value ==
+                                  controller.board[index]
+                              ? getColor(Colors.grey.shade800, Colors.white)
+                              : getColor(Colors.grey.shade500, Colors.white),
+                          weight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }),
+                );
               }),
               SizedBox(height: 10),
               CustomText(
-                  text: 'Type',
-                  color: Colors.grey.shade700,
-                  fontSize: 18,
-                  weight: FontWeight.bold),
+                text: 'Type',
+                color: getColor(Colors.grey.shade500, Colors.white),
+                fontSize: 18,
+                weight: FontWeight.bold,
+              ),
               SizedBox(height: 15),
               Obx(() {
                 return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(controller.type.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          controller.updateType(controller
-                              .type[index]); // Update the selected board
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: controller.typeTask.value ==
-                                      controller.type[index]
-                                  ? Color(themeColor)
-                                  : Colors.transparent,
-                            ), // Default color
-                            borderRadius: BorderRadius.circular(10),
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(controller.type.length, (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        controller.updateType(controller.type[index]);
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: controller.typeTask.value ==
+                                    controller.type[index]
+                                ? Color(themeColor)
+                                : Colors.transparent,
                           ),
-                          child: CustomText(
-                            text: controller.type[index],
-
-                            color: controller.typeTask.value !=
-                                    controller.typeTask.value
-                                ? Colors.grey.shade400
-                                : Colors.grey.shade800,
-                            // Default text color
-                            weight: FontWeight.bold,
-                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      );
-                    }));
+                        child: CustomText(
+                          text: controller.type[index],
+                          color: controller.typeTask.value ==
+                                  controller.type[index]
+                              ? getColor(Colors.grey.shade800, Colors.white)
+                              : getColor(Colors.grey.shade400, Colors.white),
+                          weight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }),
+                );
               }),
               SizedBox(height: 30),
               Center(
-                  child: CommonButton(
-                onPressed: () async {
-                  print('Task Name: ${taskController.text.trim()}');
+                child: CommonButton(
+                  onPressed: () async {
+                    print('Task Name: ${taskController.text.trim()}');
 
-                  await controller.saveTask(
-                    taskController.text.trim(),
-                    teamNameController.text.trim(),
-                    dateController.text.trim(),
-                    startTimeController.text.trim(),
-                    endTimeController.text.trim(),
-                    subTitle.text.trim(),
-                  );
+                    await controller.saveTask(
+                      taskController.text.trim(),
+                      teamNameController.text.trim(),
+                      dateController.text.trim(),
+                      startTimeController.text.trim(),
+                      endTimeController.text.trim(),
+                      subTitle.text.trim(),
+                    );
 
-                  // Clear the text fields only after saving
-                  taskController.clear();
-                  teamNameController.clear();
-                  dateController.clear();
-                  startTimeController.clear();
-                  endTimeController.clear();
-                  subTitle.clear();
-                  controller.logoUrl.value = '';
-
-                  controller.teamMembers.clear();
-                  controller.board[0];
-                  controller.type[0];
-                },
-                vertcalPaddingM: 15,
-                horizontalPadding: 160,
-                title: 'Save',
-                bgColor: Color(themeColor),
-              ))
+                    taskController.clear();
+                    teamNameController.clear();
+                    dateController.clear();
+                    startTimeController.clear();
+                    endTimeController.clear();
+                    subTitle.clear();
+                    controller.logoUrl.value = '';
+                    controller.teamMembers.clear();
+                    controller.selectedBoard.value = controller.board[0];
+                    controller.typeTask.value = controller.type[0];
+                  },
+                  vertcalPaddingM: 15,
+                  horizontalPadding: 160,
+                  title: 'Save',
+                  bgColor: Color(themeColor),
+                ),
+              ),
             ],
           ),
         ),

@@ -3,17 +3,31 @@ import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard(
-      {super.key, required this.index, this.taskName, this.taskDescription});
+  const TaskCard({
+    super.key,
+    required this.index,
+    this.taskName,
+    this.taskDescription,
+    required this.value,
+    required this.targetProgress,
+    required this.userProgress,
+    required this.image,
+    required this.length,
+  });
   final int index;
   final String? taskName;
   final String? taskDescription;
+  final double value;
+  final int targetProgress; // Target Progress
+  final int userProgress;
+  final image;
+  final int length;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 210,
+      height: 205,
       margin: EdgeInsets.only(right: 10),
-      width: MediaQuery.of(context).size.width * 0.95,
+      width: MediaQuery.of(context).size.width * 0.85,
       decoration: BoxDecoration(
         color: const Color(themeColor),
         borderRadius: BorderRadius.circular(25),
@@ -42,15 +56,21 @@ class TaskCard extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 100,
-                  width: 100,
+                  width: 110,
                   child: Stack(
                     alignment: Alignment.center,
-                    children: List.generate(3, (i) {
+                    children: List.generate(length, (i) {
                       return Positioned(
                         left: i * 25.0, // Adjust spacing for overlap
-                        child: CircleAvatar(
-                          radius: 25, // Adjust size as needed
-                          backgroundColor: Colors.red,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border:
+                                  Border.all(color: Colors.white, width: 2)),
+                          child: CircleAvatar(
+                            radius: 25, // Adjust size as needed
+                            backgroundImage: NetworkImage(image[i]),
+                          ),
                         ),
                       );
                     }),
@@ -73,7 +93,7 @@ class TaskCard extends StatelessWidget {
                             ),
                             CustomText(
                               text:
-                                  '', // '${progressValues[index]}/${totalValues[index]}',
+                                  '$userProgress/ $targetProgress', // '${progressValues[index]}/${totalValues[index]}',
                               color: Colors.white,
                             ),
                           ],
@@ -85,7 +105,7 @@ class TaskCard extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: LinearProgressIndicator(
-                          // value: progressValues[index] / totalValues[index],
+                          value: value,
                           backgroundColor: Colors.white.withOpacity(0.2),
                           color: Colors.white,
                           minHeight: 10,

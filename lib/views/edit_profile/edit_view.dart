@@ -65,9 +65,7 @@ class _AddState extends State<Add> {
         : imageUrl;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: CustomText(
           text: 'Edit Profile',
           weight: FontWeight.w500,

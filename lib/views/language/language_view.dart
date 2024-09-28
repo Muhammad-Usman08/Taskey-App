@@ -14,7 +14,6 @@ class _LanguageState extends State<Language> {
 
   Widget _buildLanguageCard(String language, int index) {
     return Card(
-      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -58,14 +57,12 @@ class _LanguageState extends State<Language> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
           title: const CustomText(
             text: 'Language',
             weight: FontWeight.w500,
             fontSize: 20,
           ),
-          backgroundColor: Colors.white,
           centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(screenPadding),

@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:taskey_app/firebase_options.dart';
-import 'package:taskey_app/views/authentication/signUp/signup_view.dart';
-import 'package:taskey_app/views/main/main_screen.dart';
+import 'package:taskey_app/views/settings/setting_view_model.dart';
+
 import 'package:taskey_app/views/splash/splash_view.dart';
 
 void main() async {
@@ -11,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(SettingViewModel());
   runApp(const MyApp());
 }
 
@@ -19,9 +20,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: SplashView(),
-      debugShowCheckedModeBanner: false,
-    );
+    final SettingViewModel settingViewModel = Get.find();
+    return Obx(() {
+      return GetMaterialApp(
+        home: SplashView(),
+        theme: settingViewModel.themeData,
+        debugShowCheckedModeBanner: false,
+      );
+    });
   }
 }

@@ -19,9 +19,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: CustomText(
           text: 'Profile',
           weight: FontWeight.w500,
@@ -71,7 +69,6 @@ class Profile extends StatelessWidget {
                 itemCount: _settingsOptions.length,
                 itemBuilder: (context, index) {
                   return Card(
-                    color: Colors.white,
                     margin:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     elevation: 4, // Adds shadow
