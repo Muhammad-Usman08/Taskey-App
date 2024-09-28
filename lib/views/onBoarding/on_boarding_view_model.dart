@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taskey_app/views/authentication/authGate/auth_gate.dart';
 class OnboardingPage {
   final String title;
   final String subtitle;
@@ -66,4 +68,32 @@ Text getFormattedSubtitle(
     textAlign: TextAlign.left,
     style: const TextStyle(fontSize: 25, height: 1.5),
   );
+}
+class OnBoardingController extends GetxController {
+  var isOnboardingCompleted = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _checkOnboardingStatus();
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    isOnboardingCompleted.value = prefs.getBool('onboarding_completed') ?? false;
+
+    if (isOnboardingCompleted.value) {
+      // Navigate to AuthGate if onboarding is completed
+      Get.off(AuthGate());
+    }
+  }
+
+  Future<void> completeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_completed', true);
+    isOnboardingCompleted.value = true;
+
+    // Navigate to AuthGate after completing onboarding
+    Get.off(AuthGate());
+  }
 }
