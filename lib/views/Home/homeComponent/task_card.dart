@@ -78,8 +78,7 @@ class TaskCard extends StatelessWidget {
                 ),
 
                 // Progress bar and info section
-                SizedBox(
-                  width: 200,
+                Expanded(
                   child: Column(
                     children: [
                       Padding(
