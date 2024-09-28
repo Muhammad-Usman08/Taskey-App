@@ -46,7 +46,7 @@ class AddTaskView extends StatelessWidget {
             },
             icon: Icon(Icons.arrow_back_ios),
           ),
-          title: 'Create Task Or Project',
+          title: 'Create Work',
         ),
       ),
       body: Padding(
@@ -473,12 +473,13 @@ class AddTaskView extends StatelessWidget {
                     controller.selectedBoard.value = controller.board[0];
                     controller.typeTask.value = controller.type[0];
                   },
-                  vertcalPaddingM: 15,
-                  horizontalPadding: 160,
+                  vertcalPaddingM: 20,
+                  horizontalPadding: 140,
                   title: 'Save',
                   bgColor: Color(themeColor),
                 ),
               ),
+              SizedBox(height: 30),
             ],
           ),
         ),
