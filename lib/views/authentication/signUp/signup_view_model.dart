@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskey_app/views/main/main_screen.dart';
+import 'package:taskey_app/views/profile/profile_view_model.dart'; // Import ProfileViewModel
 
 class SignupViewModel extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   final TextEditingController usernameController = TextEditingController();
@@ -49,10 +48,16 @@ class SignupViewModel extends GetxController {
         'imageUrl': imageUrl, // Store image URL
       });
 
+      // Update ProfileViewModel with the new user's information
+      Get.find<ProfileViewModel>().fetchUserData();
+
       Get.snackbar('Success', 'Account created successfully');
       usernameController.clear();
       emailController.clear();
       passwordController.clear();
+      imageFile.value = ''; // Clear image file
+
+      // Navigate to the main screen
       Get.offAll(() => MainScreen());
     } on FirebaseAuthException catch (e) {
       String message;
@@ -67,7 +72,7 @@ class SignupViewModel extends GetxController {
           message = 'The email address is not valid.';
           break;
         default:
-          message = 'An undefined Error happened.';
+          message = 'An undefined error happened.';
       }
       Get.snackbar('Error', message);
     } catch (e) {

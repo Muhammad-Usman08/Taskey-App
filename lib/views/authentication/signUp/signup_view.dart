@@ -18,13 +18,13 @@ class SignupView extends StatelessWidget {
     final SignupViewModel controller = Get.put(SignupViewModel());
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: CustomText(
-            text: 'Sign Up',
-            weight: FontWeight.w500,
-            fontSize: 20,
-          ),
+        title: CustomText(
+          text: 'Sign Up',
+          weight: FontWeight.w500,
+          fontSize: 20,
         ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(screenPadding),

@@ -17,26 +17,13 @@ class ProjectView extends StatelessWidget {
     List<String> per = ['Favourite', 'Recent', 'All'];
 
     return Scaffold(
-      
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: CustomAppBar(
-          icon: IconButton(
-            onPressed: () {
-              // Handle back action
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back_ios),
-          ),
-          icon2: IconButton(
-            onPressed: () {
-              // Handle add action
-              // Your add logic here
-            },
-            icon: Icon(Icons.add),
-          ),
-          title: 'Projects',
+      appBar: AppBar(
+        title: CustomText(
+          text: 'Projects',
+          weight: FontWeight.bold,
+          fontSize: 22,
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),

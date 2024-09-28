@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/settings/setting_view_model.dart';
@@ -25,23 +26,10 @@ class Setting extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Obx(
-              () => buildOption(
-                  'Permission', settingsController.isPermissionEnabled.value,
-                  () {
-                settingsController.togglePermission();
-              }),
-            ),
-            const SizedBox(height: 20),
             Obx(() => buildOption(
                     'Dark Mode', settingsController.isDarkModeEnabled.value,
                     () {
                   settingsController.toggleDarkMode();
-                })),
-            const SizedBox(height: 20),
-            Obx(() => buildOption('Push Notification',
-                    settingsController.isPushNotificationEnabled.value, () {
-                  settingsController.togglePushNotification();
                 })),
             const SizedBox(height: 30),
             buildListOption('Security', Icons.security),
@@ -51,6 +39,15 @@ class Setting extends StatelessWidget {
             buildListOption('Language', Icons.language),
             const SizedBox(height: 20),
             buildListOption('About Application', Icons.info_outline),
+            const SizedBox(height: 20),
+            CommonButton(
+              onPressed: () {
+                settingsController.logOut();
+              },
+              title: 'Log Out',
+              isLoading: settingsController.isLoading.value,
+              vertcalPaddingM: 15,
+            )
           ],
         ),
       ),
