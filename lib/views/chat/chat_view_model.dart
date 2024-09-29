@@ -14,9 +14,6 @@ class ChatViewModel extends GetxController {
 
   //chat Room id
   String chatRoomId(String user1, String user2) {
-    print('User 1: $user1');
-    print('User 2: $user2');
-
     if (user1.toLowerCase().compareTo(user2.toLowerCase()) > 0) {
       return "$user1$user2";
     } else {
@@ -52,10 +49,10 @@ class ChatViewModel extends GetxController {
     searchController.clear();
   }
 
-  onSendMessage(chatRoomId) async {
-    if (message.text.isNotEmpty) {
+  onSendMessage(String chatRoomId, String sendBy) async {
+    if (message.text.isNotEmpty && sendBy.isNotEmpty) {
       Map<String, dynamic> messages = {
-        "sendBy": auth.currentUser?.displayName,
+        "sendBy": sendBy,
         "message": message.text,
         "time": FieldValue.serverTimestamp(),
       };
@@ -66,7 +63,7 @@ class ChatViewModel extends GetxController {
           .collection('chats')
           .add(messages);
     } else {
-      print('Enter some text');
+      print('Error: Message is empty or sendBy is null');
     }
   }
 }

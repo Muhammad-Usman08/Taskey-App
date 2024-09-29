@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:taskey_app/Model/firestore_controller.dart';
 import 'package:taskey_app/components/common_button.dart';
 import 'package:taskey_app/components/custom_texfield.dart';
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/chat/chat_view_model.dart';
 import 'package:taskey_app/views/chat/chatting_view.dart';
+import 'package:taskey_app/views/profile/profile_view_model.dart';
 
 class ChatScreen extends StatelessWidget {
   final bool backbutton;
   ChatScreen({super.key, required this.backbutton});
 
   final controller = Get.put(ChatViewModel());
-  final firestoreController = Get.find<FirestoreController>();
+  final firestoreController = Get.put(ProfileViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class ChatScreen extends StatelessWidget {
                         child: ListTile(
                           onTap: () {
                             String currentUser =
-                                firestoreController.currentUser?.username ??
+                                firestoreController.userData['username'] ??
                                     'currentUser';
                             String otherUser =
                                 controller.userMap?['username'] ?? 'toChat';
