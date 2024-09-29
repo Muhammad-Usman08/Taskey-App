@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'
-    as auth; // Alias Firebase Auth's User class
 import 'package:get/get.dart';
-import 'package:taskey_app/Model/firesstore_model.dart'; // Import your custom User model
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileViewModel extends GetxController {
   var isLoading = true.obs;
-  User? currentUser; // This refers to your custom User model
+  var userData = <String, dynamic>{}.obs; // Observable for user data
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -16,30 +17,19 @@ class ProfileViewModel extends GetxController {
 
   Future<void> fetchUserData() async {
     try {
-      isLoading(true);
-
-      // Get the current authenticated user from Firebase Auth
-      final auth.User? user = auth.FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        print('No user logged in');
-        isLoading(false);
-        return;
+      final currentUserAuth = _auth.currentUser;
+      if (currentUserAuth == null) {
+        throw Exception('User not logged in');
       }
 
-      // Fetch user data from Firestore
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-
-      if (userDoc.exists) {
-        currentUser = User.fromDocument(user.uid, userDoc.data()!);
-      }
-
-      isLoading(false);
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(currentUserAuth.uid).get();
+      userData.value =
+          userDoc.data() as Map<String, dynamic>; // Store data as a Map
     } catch (e) {
       print('Error fetching user data: $e');
-      isLoading(false);
+    } finally {
+      isLoading.value = false; // Stop loading
     }
   }
 }

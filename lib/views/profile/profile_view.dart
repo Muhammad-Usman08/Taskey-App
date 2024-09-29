@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:taskey_app/Model/firesstore_model.dart';
+import 'profile_view_model.dart'; // Import your ProfileViewModel
 import 'package:taskey_app/components/custom_text.dart';
 import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/language/language_view.dart';
-import 'package:taskey_app/views/profile/profile_view_model.dart';
 import 'package:taskey_app/views/settings/setting_view.dart';
-import 'package:taskey_app/views/task/task_view.dart'; // Import your edit.dart file
+import 'package:taskey_app/views/task/task_view.dart';
 
 class Profile extends StatelessWidget {
-  Profile({
-    super.key,
-    required this.user,
-  });
-  final User user;
-  final controller = Get.put(ProfileViewModel());
+  Profile({super.key});
+
+  final ProfileViewModel controller = Get.put(ProfileViewModel());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +26,9 @@ class Profile extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return Center(child: CircularProgressIndicator());
         } else {
+          final user = controller.userData; // Access the user data map
           return SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -40,18 +36,17 @@ class Profile extends StatelessWidget {
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(
-                    '${user.imageUrl}',
-                  ),
+                  backgroundImage:
+                      NetworkImage(user['imageUrl'] ?? ''), // Use user map
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '${user.username}',
+                  user['username'] ?? 'Unknown User', // Use user map
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  '${user.email}',
+                  user['email'] ?? 'No Email', // Use user map
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 20),
@@ -68,15 +63,14 @@ class Profile extends StatelessWidget {
                       return Card(
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
-                        elevation: 4, // Adds shadow
+                        elevation: 4,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
                           leading: Icon(
                             _getIconForOption(index),
-                            color:
-                                const Color(themeColor), // Customize icon color
+                            color: const Color(themeColor),
                           ),
                           title: Text(
                             _settingsOptions[index],
@@ -90,14 +84,13 @@ class Profile extends StatelessWidget {
                               vertical: 8, horizontal: 15),
                           onTap: () {
                             switch (index) {
-                              case 0: // Edit
+                              case 0:
                                 Get.to(() => Language());
                                 break;
-                              case 1: // Language
+                              case 1:
                                 Get.to(() => Setting());
                                 break;
-
-                              case 2: // Chat Screen
+                              case 2:
                                 Get.to(() => TaskScreen());
                                 break;
                             }

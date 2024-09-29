@@ -33,17 +33,12 @@ class _HomeScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final FirestoreController firestoreController =
         Get.put(FirestoreController());
-    User? user = firestoreController.currentUser;
     List<Widget> screens = [
       HomeView(),
       ProjectView(),
       AddTaskView(),
       ChatScreen(backbutton: false),
-      user != null
-          ? Profile(
-              user: user,
-            )
-          : Container(),
+      Profile(),
     ];
 
     return Scaffold(

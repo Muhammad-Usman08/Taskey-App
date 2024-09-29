@@ -27,7 +27,10 @@ class LoginViewModel extends GetxController {
       );
 
       //user data fetch from Firestore
-      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userCredential.user?.uid).get();
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .get();
 
       // Handle successful login
       Get.snackbar('Success', 'Logged in successfully');

@@ -40,14 +40,18 @@ class Setting extends StatelessWidget {
             const SizedBox(height: 20),
             buildListOption('About Application', Icons.info_outline),
             const SizedBox(height: 20),
-            CommonButton(
-              onPressed: () {
-                settingsController.logOut();
+            Obx(
+              () {
+                return CommonButton(
+                  onPressed: () {
+                    settingsController.logOut();
+                  },
+                  title: 'Log Out',
+                  isLoading: settingsController.isLoading.value,
+                  vertcalPaddingM: 15,
+                );
               },
-              title: 'Log Out',
-              isLoading: settingsController.isLoading.value,
-              vertcalPaddingM: 15,
-            )
+            ),
           ],
         ),
       ),
