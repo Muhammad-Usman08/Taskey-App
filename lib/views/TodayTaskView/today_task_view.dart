@@ -6,9 +6,11 @@ import 'package:taskey_app/utils/constants.dart';
 import 'package:taskey_app/views/TodayTaskView/TodayTaskViewComponent/hourly_task_cards.dart';
 import 'package:taskey_app/views/TodayTaskView/TodayTaskViewComponent/today_monthly_card.dart';
 import 'package:taskey_app/views/TodayTaskView/today_task_view_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class TodayTaskView extends StatelessWidget {
-  const TodayTaskView({super.key});
+  const TodayTaskView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,159 +20,132 @@ class TodayTaskView extends StatelessWidget {
         preferredSize: Size.fromHeight(100),
         child: CustomAppBar(
           icon: IconButton(
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: () => Get.back(),
             icon: Icon(Icons.arrow_back_ios),
           ),
           icon2: IconButton(
-            onPressed: () {},
+            onPressed: () {}, // Add edit functionality if needed
             icon: Icon(Icons.edit_outlined),
           ),
           title: 'Today Task',
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(screenPadding),
-          child: Column(
-            children: [
-              TodayMonthlyCard(),
-              SizedBox(height: 10),
-              SizedBox(
-                height: 130,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 30,
-                  itemBuilder: (context, index) {
-                    String day = controller.getDay(index);
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Obx(() {
-                        return Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomText(
-                                text: '${index + 1}',
-                                fontSize: 25,
-                                color: controller.selectedDay.value == index
-                                    ? Colors.white
-                                    : Colors.grey.shade500,
-                              ),
-                              CustomText(
-                                text: day,
-                                fontSize: 25,
-                                color: controller.selectedDay.value == index
-                                    ? Colors.white
-                                    : Colors.grey.shade500,
-                              ),
-                            ],
-                          ),
-                          height: 80,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: controller.selectedDay.value == index
-                                ? Color(themeColor)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        );
-                      }),
+      body: Padding(
+        padding: const EdgeInsets.all(screenPadding),
+        child: Column(
+          children: [
+            TodayMonthlyCard(),
+            SizedBox(height: 10),
+            _buildDateSelector(controller),
+            SizedBox(height: 15),
+            Divider(),
+            Expanded(
+              child: Obx(() {
+                return FutureBuilder<QuerySnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection('tasks')
+                      .where('date',
+                          isEqualTo: DateFormat('MMMM d, yyyy').format(
+                              DateTime.now().subtract(Duration(
+                                  days: 29 - controller.selectedDay.value))))
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(
+                          child: Text('No tasks found for this day.'));
+                    }
+
+                    List<Task> tasks = snapshot.data!.docs.map((doc) {
+                      Task task = Task.fromFirestore(doc);
+                      print(
+                          'Task: ${task.taskName}, Date: ${task.date}'); // Debugging log
+                      return task;
+                    }).toList();
+
+                    print(
+                        'Total tasks to display: ${tasks.length}'); // Debugging log
+
+                    return ListView.builder(
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        return _buildTaskCard(tasks[index],);
+                      },
                     );
                   },
-                ),
-              ),
-              SizedBox(height: 15),
-              Divider(),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: avatarColors.length,
-                itemBuilder: (context, index) {
-                  bool isEven = index % 2 == 0;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: isEven
-                        ? Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Stack(
-                                    alignment: Alignment.topCenter,
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Container(
-                                        width: 80,
-                                        height: 1,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      Positioned(
-                                        bottom: 20,
-                                        left: -1,
-                                        child: CustomText(
-                                          text: getTimeForIndex(index),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              HourlyTaskCards(index: index),
-                            ],
-                          )
-                        : Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Positioned(
-                                left: -1,
-                                child: Container(
-                                  width: 125,
-                                  height: 1,
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 100,
-                                  ),
-                                  HourlyTaskCards(index: index),
-                                ],
-                              ),
-                              Positioned(
-                                bottom: 40,
-                                child: CustomText(
-                                  text: getTimeForIndex(index),
-                                ),
-                              ),
-                              Positioned(
-                                left: -1,
-                                bottom: -1,
-                                child: Container(
-                                  width: 125,
-                                  height: 1,
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                            ],
-                          ),
-                  );
-                },
-              )
-            ],
-          ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );
   }
-}
 
-String getTimeForIndex(int index) {
-  int startHour = 10 + index; // Example: starts from 10 AM
-  int endHour = startHour + 1;
-  if (endHour == 12) {
-    return '$endHour:00 PM';
+  Widget _buildDateSelector(TodayTaskViewModel controller) {
+    return SizedBox(
+      height: 130,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 30,
+        itemBuilder: (context, index) {
+          String day = controller.getDay(index);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Obx(() {
+              return GestureDetector(
+                onTap: () {
+                  controller.selectedDay.value = index;
+                },
+                child: Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: controller.selectedDay.value == index
+                        ? Color(themeColor)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: '${index + 1}',
+                        fontSize: 25,
+                        color: controller.selectedDay.value == index
+                            ? Colors.white
+                            : Colors.grey.shade500,
+                      ),
+                      CustomText(
+                        text: day,
+                        fontSize: 25,
+                        color: controller.selectedDay.value == index
+                            ? Colors.white
+                            : Colors.grey.shade500,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          );
+        },
+      ),
+    );
   }
-  return '$endHour:00 AM';
+
+  Widget _buildTaskCard(Task task) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: HourlyTaskCard(task: task), // Pass the individual task
+    );
+  }
 }

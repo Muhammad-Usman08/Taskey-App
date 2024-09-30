@@ -20,7 +20,9 @@ class HomeView extends StatelessWidget {
           preferredSize: const Size.fromHeight(100),
           child: CustomAppBar(
             icon: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(TodayTaskView());
+                },
                 icon: const Icon(
                   Icons.dashboard_outlined,
                 )),

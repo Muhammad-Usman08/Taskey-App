@@ -187,123 +187,126 @@ class AddTaskView extends StatelessWidget {
                 weight: FontWeight.w700,
               ),
               SizedBox(height: 5),
-              Row(
-                children: [
-                  Obx(() {
-                    return Row(
-                      children:
-                          List.generate(controller.teamMembers.length, (i) {
-                        final member = controller.teamMembers[i];
-                        final isLeader =
-                            controller.leaderId.value == member['userId'];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.setLeader(member['userId']);
-                            },
-                            child: Column(
-                              children: [
-                                Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(member['imageUrl']),
-                                      radius: 25,
-                                    ),
-                                    if (isLeader)
-                                      Positioned(
-                                        right: 0,
-                                        bottom: 0,
-                                        child: Icon(
-                                          Icons.check_circle,
-                                          color: Colors.green,
-                                          size: 20,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Obx(() {
+                      return Row(
+                        children:
+                            List.generate(controller.teamMembers.length, (i) {
+                          final member = controller.teamMembers[i];
+                          final isLeader =
+                              controller.leaderId.value == member['userId'];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.setLeader(member['userId']);
+                              },
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(member['imageUrl']),
+                                        radius: 25,
+                                      ),
+                                      if (isLeader)
+                                        Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Icon(
+                                            Icons.check_circle,
+                                            color: Colors.green,
+                                            size: 20,
+                                          ),
                                         ),
-                                      ),
-                                    SizedBox(height: 5),
-                                  ],
-                                ),
-                                Center(
-                                  child: CustomText(
-                                    text: member['username'],
-                                    color: getColor(
-                                        Colors.grey.shade700, Colors.white),
-                                    fontSize: 12,
+                                      SizedBox(height: 5),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                    );
-                  }),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Select Team Member'),
-                            content: SizedBox(
-                              height: 200,
-                              width: double.maxFinite,
-                              child: Obx(() {
-                                return ListView.builder(
-                                  itemCount: controller.users.length,
-                                  itemBuilder: (context, index) {
-                                    final user = controller.users[index];
-                                    return ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundImage: user['imageUrl'] !=
-                                                    null &&
-                                                user['imageUrl'].isNotEmpty
-                                            ? NetworkImage(user['imageUrl'])
-                                            : NetworkImage(
-                                                'https://cdn-icons-png.freepik.com/256/7162/7162968.png?ga=GA1.1.1256163933.1675831381&semt=ais_hybrid'),
-                                      ),
-                                      title: Text(user['username']),
-                                      onTap: () {
-                                        controller.addTeamMember(user);
-                                        Get.back();
-                                      },
-                                    );
-                                  },
-                                );
-                              }),
+                                  Center(
+                                    child: CustomText(
+                                      text: member['username'],
+                                      color: getColor(
+                                          Colors.grey.shade700, Colors.white),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
-                        },
+                        }),
                       );
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Color(themeColor),
+                    }),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Select Team Member'),
+                              content: SizedBox(
+                                height: 200,
+                                width: double.maxFinite,
+                                child: Obx(() {
+                                  return ListView.builder(
+                                    itemCount: controller.users.length,
+                                    itemBuilder: (context, index) {
+                                      final user = controller.users[index];
+                                      return ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundImage: user['imageUrl'] !=
+                                                      null &&
+                                                  user['imageUrl'].isNotEmpty
+                                              ? NetworkImage(user['imageUrl'])
+                                              : NetworkImage(
+                                                  'https://cdn-icons-png.freepik.com/256/7162/7162968.png?ga=GA1.1.1256163933.1675831381&semt=ais_hybrid'),
+                                        ),
+                                        title: Text(user['username']),
+                                        onTap: () {
+                                          controller.addTeamMember(user);
+                                          Get.back();
+                                        },
+                                      );
+                                    },
+                                  );
+                                }),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: Color(themeColor),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Color(themeColor)),
                             ),
                           ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Color(themeColor)),
+                          SizedBox(height: 5),
+                          CustomText(
+                            text: 'Add',
+                            weight: FontWeight.bold,
+                            color: getColor(Colors.grey.shade700, Colors.white),
+                            fontSize: 12,
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        CustomText(
-                          text: 'Add',
-                          weight: FontWeight.bold,
-                          color: getColor(Colors.grey.shade700, Colors.white),
-                          fontSize: 12,
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(height: 10),
               CustomText(

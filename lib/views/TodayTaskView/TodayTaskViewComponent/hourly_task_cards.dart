@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:taskey_app/components/custom_text.dart';
+import 'package:taskey_app/views/TodayTaskView/today_task_view_model.dart';
 
-class HourlyTaskCards extends StatelessWidget {
-  const HourlyTaskCards({super.key, required this.index});
-  final int index;
+class HourlyTaskCard extends StatelessWidget {
+  final Task task;
+
+   HourlyTaskCard({Key? key, required this.task}) : super(key: key);
+
+  final List<Color> cardColors = [
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.red,
+    Colors.teal,
+    Colors.amber,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // Safeguard for index to avoid RangeError
-    if (index < 0 || index >= taskTitles.length) {
-      return Container(); 
-    }
-
     return Container(
       decoration: BoxDecoration(
-        color: cardColor[index % cardColor.length], // Ensure no RangeError
+        color: cardColors[task.hashCode % cardColors.length], // Unique color for each task
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
@@ -23,7 +30,7 @@ class HourlyTaskCards extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-              text: taskTitles[index],
+              text: task.taskName.isNotEmpty ? task.taskName : 'No Task Name',
               color: Colors.white,
               weight: FontWeight.bold,
               fontSize: 18,
@@ -37,14 +44,25 @@ class HourlyTaskCards extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: List.generate(
-                      avatarColors[index % avatarColors.length].length,
+                      task.teamMembers.length,
                       (i) {
                         return Positioned(
                           left: i * 20.0,
-                          child: CircleAvatar(
-                            radius: 15,
-                            backgroundColor:
-                                avatarColors[index % avatarColors.length][i],
+                          child: ClipOval(
+                            child: Image.network(
+                              task.teamMembers[i]['imageUrl'] ?? '',
+                              width: 30,
+                              height: 30,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 30,
+                                  height: 30,
+                                  color: Colors.grey,
+                                  child: Center(child: Text('N/A', style: TextStyle(color: Colors.white))),
+                                );
+                              },
+                            ),
                           ),
                         );
                       },
@@ -52,7 +70,7 @@ class HourlyTaskCards extends StatelessWidget {
                   ),
                 ),
                 CustomText(
-                  text: timeRange[index],
+                  text: '${task.startTime} - ${task.endTime}',
                   color: Colors.white54,
                   fontSize: 12,
                 ),
@@ -64,26 +82,3 @@ class HourlyTaskCards extends StatelessWidget {
     );
   }
 }
-
-// Sample data lists
-List<String> timeRange = [
-  '10am - 11am',
-  '11:40am - 12:40pm',
-  '01:20pm - 02:20pm'
-];
-List<String> taskTitles = [
-  'Wireframe elements ☺',
-  'Mobile app Design 😍',
-  'Design Team call 🤗'
-];
-List<List<Color>> avatarColors = [
-  [Colors.orange, Colors.green],
-  [Colors.red, Colors.yellow, Colors.deepPurple],
-  [Colors.cyan, Colors.teal, Colors.red, Colors.green]
-];
-
-List<Color> cardColor = [
-  Colors.blue,
-  Colors.green,
-  Colors.orange,
-];
